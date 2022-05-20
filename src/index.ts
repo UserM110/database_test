@@ -2,8 +2,10 @@ import express, {Application, Request, Response} from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import erroMiddleware from './middleware/error.middleware';
+import config from './config';
+import db from './database';
 
-const PORT = 3000;
+const PORT = config.port || 3000;
 //server
 const app: Application = express();
 //middleware
@@ -26,11 +28,23 @@ app.post('/', (req: Request, res: Response) => {res.json({
     data: req.body,
 });
 });
+
+db.connect().then(client => {
+    return client.query('SELECT NOW()').then(res => {
+        client.release();
+        console.log(res.rows);
+    })
+    .catch(err => {
+        client.release();
+        console.log(err.stack)
+    });
+});
+
 app.use(erroMiddleware);
 
 app.use((_req: Request, res:Response) => {
     res.status(404).json({
-        message: 'Oh Error try again'
+        message: 'Error try again'
     });
 });
 
