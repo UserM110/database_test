@@ -1,7 +1,7 @@
 import express, {Application, Request, Response} from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
-
+import erroMiddleware from './middleware/error.middleware';
 
 const PORT = 3000;
 //server
@@ -12,8 +12,10 @@ app.use(express.json());
 app.use(morgan('common'));
 //security
 app.use(helmet())
+
 //routing
 app.get('/', (req: Request, res: Response) => {
+    throw new Error("Error");
     res.json({
         message: "Hello World",
     });
@@ -24,6 +26,14 @@ app.post('/', (req: Request, res: Response) => {res.json({
     data: req.body,
 });
 });
+app.use(erroMiddleware);
+
+app.use((_req: Request, res:Response) => {
+    res.status(404).json({
+        message: 'Oh Error try again'
+    });
+});
+
 app.listen(PORT, () => {console.log(`Server is starting at prot:${PORT}`);
 });
 
