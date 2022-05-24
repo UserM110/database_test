@@ -44,6 +44,8 @@
   },
   "homepage": "https://github.com/UserM110/database_test#readme",
   "dependencies": {
+    "db-migrate": "^0.11.13",
+    "db-migrate-pg": "^1.2.2",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "helmet": "^5.1.0",

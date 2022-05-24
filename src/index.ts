@@ -1,9 +1,10 @@
 import express, {Application, Request, Response} from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import routes from './routes';
 import erroMiddleware from './middleware/error.middleware';
 import config from './config';
-import db from './database';
+//import db from './database';
 
 const PORT = config.port || 3000;
 //server
@@ -13,22 +14,26 @@ app.use(express.json());
 //http
 app.use(morgan('common'));
 //security
-app.use(helmet())
+app.use(helmet());
+
+app.use('/api', routes);
+
 
 //routing
 app.get('/', (req: Request, res: Response) => {
-    throw new Error("Error");
     res.json({
         message: "Hello World",
     });
 });
-//post
+
+/*//post
 app.post('/', (req: Request, res: Response) => {res.json({
     message: "Hello World",
     data: req.body,
 });
-});
+});*/
 
+/*test connection
 db.connect().then(client => {
     return client.query('SELECT NOW()').then(res => {
         client.release();
@@ -38,7 +43,7 @@ db.connect().then(client => {
         client.release();
         console.log(err.stack)
     });
-});
+});*/
 
 app.use(erroMiddleware);
 
