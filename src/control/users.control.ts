@@ -17,11 +17,42 @@ export const create = async (req: Request, res: Response, next: NextFunction) =>
     }
 };
 
-export const getMany = async (__: Request, res: Response, next: NextFunction) => {
+export const getMany = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const users = await userModel.getMany();
-        } catch (err) {
-            next(err)
+            res.json({status: "success", data: users, message: "retrival was successful"});
+        } catch (error) {
+            next(error)
             
         }
     };
+
+export const getOne = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await userModel.getOne(req.params.id as unknown as string);
+        res.json({status: "success", data: user, message: "retrival was successful"});
+    } catch (error) {
+        next(error)
+        
+    }
+};
+
+export const updateOne = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await userModel.updateOne(req.body);
+        res.json({status: "success", data: user, message: "successful updating"});
+    } catch (error) {
+        next(error)
+        
+    }
+};
+
+export const deleteOne = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const user = await userModel.deleteOne(req.params.id as unknown as string);
+        res.json({status: "success", data: user, message: "Deleting Done"});
+    } catch (error) {
+        next(error)
+        
+    }
+};

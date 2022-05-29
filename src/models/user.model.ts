@@ -1,7 +1,7 @@
 import db from "../database";
 import User from "../types/user.type";
 
-classs UserModel {
+class UserModel {
     //create
     async create(u: User): Promise<User> {
         try {
@@ -66,7 +66,7 @@ classs UserModel {
         }
     }
     //delete
-    asyn deleteOne(id: string): Promise<User> {
+    async deleteOne(id: string): Promise<User> {
         try {
             const connection = await db.connect();
             const sql = `DELETE FROM users WHERE id=($1) RETURNING id, email, user_name, first_name, last_name`;

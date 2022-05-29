@@ -26,14 +26,14 @@ app.get('/', (req: Request, res: Response) => {
     });
 });
 
-/*//post
+//post
 app.post('/', (req: Request, res: Response) => {res.json({
     message: "Hello World",
     data: req.body,
 });
-});*/
+});
 
-/*test connection
+/*//test connection
 db.connect().then(client => {
     return client.query('SELECT NOW()').then(res => {
         client.release();

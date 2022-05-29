@@ -30,7 +30,8 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "start": "npm run build && node dist/index.js",
     "test": "npm run build && jasmine",
-    "format": "prettier --write src/**/*.ts"
+    "format": "prettier --write src/**/*.ts",
+    "migration:run": "db-migrate up"
   },
   "repository": {
     "type": "git",
