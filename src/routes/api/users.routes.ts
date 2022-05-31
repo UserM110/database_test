@@ -4,8 +4,14 @@ import * as control from '../../control/users.control';
 
 const routes = Router();
 
-routes.post('/', control.create);
+routes.route('/')
+.get(control.getMany)
+.post(control.create);
 
+routes.route('/:id')
+.get(control.getOne)
+.patch(control.updateOne)
+.delete(control.deleteOne);
 
 
 
