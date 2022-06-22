@@ -1,5 +1,13 @@
 import db from "../database";
 import User from "../types/user.type";
+import config from "../config";
+import bcrypt from "bcrypt";
+
+
+const hashPassword = (password: string) => {
+    const salt = parseInt(config.salt as string, 10);
+    return bcrypt.hashSync(`${password}${config.pepper}`, salt);
+}
 
 class UserModel {
     //create
@@ -9,13 +17,14 @@ class UserModel {
             const connection = await db.connect();
             const sql = `INSERT INTO users (email, user_name,first_name, last_name, password)
             values ($1, $2, $3, $4, $5) returning id, email, username, first_name, last_name`;
+            
             //query
             const result = await connection.query(sql, [
                 u.email,
                 u.user_name,
                 u.first_name,
                 u.last_name,
-                u.password,
+                hashPassword(u.password),
             ]);
             //release con.
             connection.release();
@@ -58,7 +67,7 @@ class UserModel {
             const connection = await db.connect();
             const sql = `UPDATE users SET email=$1, user_name=$2, first_name=$3, last_name=$4, password=$5 
              WHERE id=$6 returning id, email, user_name, first_name, last_name`;
-            const result = await connection.query(sql, [u.email, u.user_name, u.first_name, u.last_name, u.password, u.id]);
+            const result = await connection.query(sql, [u.email, u.user_name, u.first_name, u.last_name, hashPassword(u.password), u.id]);
             connection.release();
             return result.rows[0];
         } catch (error) {
@@ -77,7 +86,9 @@ class UserModel {
             throw new Error(`Error at deleting ${id}, ${(error as Error).message}`);
         }
     }
-    //authinticate
+
+    //auth
+    
 }
 
 
